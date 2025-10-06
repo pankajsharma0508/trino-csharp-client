@@ -23,15 +23,15 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      working-directory: ${{ github.workspace }}/trino-csharp-client/trino-csharp
+      working-directory: ${{ github.workspace }}
       run: dotnet restore TrinoDriver.sln
 
     - name: Build solution
-      working-directory: ${{ github.workspace }}/trino-csharp-client/trino-csharp
+      working-directory: ${{ github.workspace }}
       run: dotnet build TrinoDriver.sln --configuration Release --no-restore
 
     - name: Pack projects
-      working-directory: ${{ github.workspace }}/trino-csharp-client/trino-csharp
+      working-directory: ${{ github.workspace }}
       run: |
         VERSION=${GITHUB_REF#refs/tags/v}  # removes 'v' prefix if triggered by tag
         if [[ "$VERSION" == "$GITHUB_REF" ]]; then
