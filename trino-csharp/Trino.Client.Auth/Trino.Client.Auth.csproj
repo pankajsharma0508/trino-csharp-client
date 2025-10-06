@@ -7,13 +7,9 @@
     <Title>Trino Client Authentication</Title>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.11.4" />
+    <PackageReference Include="Trino.Client.CSharp" Version="0.0.13" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Trino.Client\Trino.Client.csproj" />
-  </ItemGroup>
-
 </Project>
+
