@@ -23,15 +23,15 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      working-directory: ${{ github.workspace }}
+      working-directory: ${{ github.workspace }}/trino-csharp
       run: dotnet restore TrinoDriver.sln
 
     - name: Build solution
-      working-directory: ${{ github.workspace }}
+      working-directory: ${{ github.workspace }}/trino-csharp
       run: dotnet build TrinoDriver.sln --configuration Release --no-restore
 
     - name: Pack projects
-      working-directory: ${{ github.workspace }}
+      working-directory: ${{ github.workspace }}/trino-csharp
       run: |
         VERSION=${GITHUB_REF#refs/tags/v}  # removes 'v' prefix if triggered by tag
         if [[ "$VERSION" == "$GITHUB_REF" ]]; then
@@ -43,7 +43,7 @@ jobs:
         dotnet pack Trino.Client.Auth/Trino.Client.Auth.csproj -c Release -o ./nupkg --no-build /p:Version=$VERSION /p:PackageId="Trino.Client.Auth"
 
     - name: Push packages to NuGet.org
-      working-directory: ${{ github.workspace }}/trino-csharp-client/trino-csharp/nupkg
+      working-directory: ${{ github.workspace }}/trino-csharp/nupkg
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
       run: |
