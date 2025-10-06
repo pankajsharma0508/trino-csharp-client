@@ -9,8 +9,8 @@
     <repository type="git" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Trino.Client" version="$version$" exclude="Build,Analyzers" />
-        <dependency id="Trino.Data.ADO" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Trino.Client.CSharp" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Trino.Client.ADO" version="$version$" exclude="Build,Analyzers" />
         <dependency id="Azure.Identity" version="[1,)" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Logging" version="[1,)" exclude="Build,Analyzers" /> 
       </group>
@@ -20,3 +20,4 @@
       <file src="bin\Release\netstandard2.0\Trino.Client.Authentication.Azure.dll" target="lib\netstandard2.0\Trino.Client.Authentication.Azure.dll" />
   </files>
 </package>
+
