@@ -1,0 +1,49 @@
+name: Publish NuGet Packages (External Repo)
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout workflow repo
+      uses: actions/checkout@v3
+        
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      working-directory: ${{ github.workspace }}/trino-csharp-client/trino-csharp
+      run: dotnet restore TrinoDriver.sln
+
+    - name: Build solution
+      working-directory: ${{ github.workspace }}/trino-csharp-client/trino-csharp
+      run: dotnet build TrinoDriver.sln --configuration Release --no-restore
+
+    - name: Pack projects
+      working-directory: ${{ github.workspace }}/trino-csharp-client/trino-csharp
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/v}  # removes 'v' prefix if triggered by tag
+        if [[ "$VERSION" == "$GITHUB_REF" ]]; then
+          VERSION="0.0.${GITHUB_RUN_NUMBER}"
+        fi
+        echo "Using version: $VERSION"
+        dotnet pack Trino.Client/Trino.Client.csproj -c Release -o ./nupkg --no-build /p:Version=$VERSION /p:PackageId="Trino.Client.CSharp"
+        dotnet pack Trino.Data.ADO/Trino.Data.ADO.csproj -c Release -o ./nupkg --no-build /p:Version=$VERSION /p:PackageId="Trino.Client.ADO"
+        dotnet pack Trino.Client.Auth/Trino.Client.Auth.csproj -c Release -o ./nupkg --no-build /p:Version=$VERSION /p:PackageId="Trino.Client.Auth"
+    - name: Push packages to NuGet.org
+      working-directory: ${{ github.workspace }}/trino-csharp-client/trino-csharp/nupkg
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: |
+        for pkg in *.nupkg; do
+          echo "Pushing $pkg"
+          dotnet nuget push "$pkg" --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
+        done
