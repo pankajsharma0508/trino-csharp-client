@@ -11,9 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout workflow repo
-      uses: actions/checkout@v3
-        
+    - name: Checkout main branch
+      uses: actions/checkout@v4
+      with:
+        ref: main       # Always fetch from the main branch
+        fetch-depth: 0  # Fetch full history (useful for versioning)
+
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v3
       with:
@@ -38,6 +41,7 @@ jobs:
         dotnet pack Trino.Client/Trino.Client.csproj -c Release -o ./nupkg --no-build /p:Version=$VERSION /p:PackageId="Trino.Client.CSharp"
         dotnet pack Trino.Data.ADO/Trino.Data.ADO.csproj -c Release -o ./nupkg --no-build /p:Version=$VERSION /p:PackageId="Trino.Client.ADO"
         dotnet pack Trino.Client.Auth/Trino.Client.Auth.csproj -c Release -o ./nupkg --no-build /p:Version=$VERSION /p:PackageId="Trino.Client.Auth"
+
     - name: Push packages to NuGet.org
       working-directory: ${{ github.workspace }}/trino-csharp-client/trino-csharp/nupkg
       env:
