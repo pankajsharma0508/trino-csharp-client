@@ -35,33 +35,14 @@ These are the libraries that make up the client:
 > .NET standard 2.0 provides compatibility with .NET Framework 4.7.2 which is widely used.
 > Design note: IAsyncEnumerable is not available in .NET Standard 2.0 but due to asynchronous read-ahead you do not need to await reading every row.
 
-## Building
+## Add package to project.
+As a part of this fork, I implemented the github actions to publish the packages.
+1. Trino.Client.Csharp <https://www.nuget.org/packages/Trino.Client.CSharp>
+2. Trino.Client.ADO <https://www.nuget.org/packages/Trino.Client.ADO>
+3. Trino.Client.Auth <https://www.nuget.org/packages/Trino.Client.Auth>
 
-### Command Line
-
-1. Install .NET SDK latest version from <https://dotnet.microsoft.com/en-us/download>
-2. From the root folder of the project, run `msbuild TrinoDriver.sln`
-
-To make the nuget packages:
-
-```cmd
-nuget pack Trino.Client\Trino.Client.nuspec -Version 1.0.0
-nuget pack Trino.Data.ADO\Trino.Data.ADO.nuspec -Version 1.0.0
-nuget pack Trino.Client.Auth\Trino.Client.Auth.nuspec -Version 1.0.0
-```
-
-### Visual Studio
-
-In Visual Studio, open TrinoDriver.sln and build.
-
-### Visual Studio Code
-
-1. Install .NET SDK latest version from <https://dotnet.microsoft.com/en-us/download>
-2. Install the C# extension for VS Code
-3. Open the project folder in VS Code
-4. Select a build configuration using the .NET: Select Project command
-5. Build using Terminal > Run Build Task or `dotnet build TrinoDriver.sln`
-
+Based on your needs you can use packages. 
+Everything else is kept as is for the compatability and updates.
 
 ## Usage Examples
 
