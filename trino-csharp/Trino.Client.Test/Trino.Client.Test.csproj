@@ -19,7 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Trino.Data.ADO\Trino.Data.ADO.csproj" />
     <ProjectReference Include="..\Trino.Client.Auth\Trino.Client.Auth.csproj" />
-    <ProjectReference Include="..\Trino.Client\Trino.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,3 +52,4 @@
   </ItemGroup>
 
 </Project>
+
