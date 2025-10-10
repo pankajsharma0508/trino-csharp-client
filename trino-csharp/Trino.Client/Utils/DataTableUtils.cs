@@ -49,7 +49,8 @@ namespace Trino.Client.Utils
                 {
                     if (records.Current[colIndex] != null)
                     {
-                        dr[colIndex] = Convert.ChangeType(records.Current[colIndex], dt.Columns[colIndex].DataType);
+                        var targetType = TrinoTypeConverters.GetClrTypeFromTrinoType(records.GetColumn(colIndex));
+                        dr[colIndex] = Convert.ChangeType(records.Current[colIndex], targetType);
                     }
                 }
                 dt.Rows.Add(dr);
