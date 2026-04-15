@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using Trino.Data.ADO.Server;
 using Trino.Data.ADO.Client;
+using Trino.Client.Auth;
 
 namespace Trino.Client.Test
 {
@@ -495,6 +496,34 @@ namespace Trino.Client.Test
             }
         }
 
+        [TestMethod]
+        public async Task KerberosAuth_Should_Execute_Simple_Query()
+        {
+            // Arrange
+            ITrinoAuth auth = new TrinoKerberosAuth();
+
+            var connectionProperties = new TrinoConnectionProperties
+            {
+                Server = new Uri("http://trino-host.domain.com:8080"),
+                Catalog = "system",
+                Schema = "runtime",
+                Auth = auth
+            };
+
+            using var connection = new TrinoConnection(connectionProperties);
+
+            await connection.OpenAsync();
+
+            // Act
+            using var command = connection.CreateCommand();
+            command.CommandText = "SELECT 1";
+
+            var result = await command.ExecuteScalarAsync();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1L, Convert.ToInt64(result));
+        }
         private static void CompareBytes(byte[] bytes, byte[] bytes_from_trino)
         {
             // compare byte arrays
